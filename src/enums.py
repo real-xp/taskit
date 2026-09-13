@@ -3,6 +3,52 @@ from enum import Enum
 _LINE_STAR_COUNT = 100
 _LINE_STAR_COUNT_BIG = 150
 
+class DBQueries(Enum):
+    CREATE_TASKLISTS = '''
+CREATE TABLE IF NOT EXISTS tasklists (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    creationDate TEXT DEFAULT CURRENT_TIMESTAMP
+)
+'''
+
+    CREATE_TASK = '''
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tasklistID INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    checked INTEGER NOT NULL DEFAULT 0,
+    priority INTEGER NOT NULL DEFAULT 0,
+    creationDate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tags TEXT,
+    FOREIGN KEY (tasklistID) REFERENCES tasklists(id) ON DELETE CASCADE
+)
+'''
+
+    CREATE_TASKLIST_ENTRY = '''
+INSERT INTO tasklists (name, creationDate) VALUES (?, ?)
+'''
+
+    CREATE_TASK_ENTRY = '''
+INSERT INTO tasks (tasklistID, name, checked, priority, creationDate, tags) VALUES (?, ?, ?, ?, ?, ?)
+'''
+
+    LOAD_ALL_TASKLISTS = '''
+SELECT * FROM tasklists ORDER BY id
+'''
+
+    LOAD_ALL_TASKS = '''
+SELECT * FROM tasks WHERE tasklistID = ? ORDER BY id
+'''
+
+    DELETE_ALL_TASKS = '''
+DROP TABLE IF EXISTS tasks
+'''
+
+    DELETE_ALL_TASKLISTS = '''
+DROP TABLE IF EXISTS tasklists
+'''
+
 class YesNo(Enum):
     YES = ('yes', 'y', 'ye')
     NO = ('no', 'n')
@@ -10,18 +56,20 @@ class YesNo(Enum):
 class Menu(Enum):
     MAIN_MENU = 0
     IN_TASK_LIST = 1
-    IN_TASK = 2
 
 class Args(Enum):
     HELP = ("help", "h")
     MAIN = ("main", "home")
     CREATE = ("create")
     DELETE = ("delete")
+    CLEAR = ("clear", "clean", "", " ")
     CHECK = ("check", "tick")
     UNCHECK = ("uncheck", "untick", "cross")
     UPDATE = ("update")
-    OPEN = ("open", "view")
-    LISTS = ("lists", "view-lists")
+    OPEN = ("open")
+    VIEW = ("view")
+    SAVE = ("save")
+    LISTS = ("lists", "view-lists", "view")
     EXIT = ("exit", "quit", "q", "leave")
 
 class TaskPriority(Enum):
@@ -84,6 +132,24 @@ No Task Lists Exist! Create A New One Using "create" or "create;<name-of-task-li
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    NEW_TASK_LIST_CREATED = f'''
+{"-"*_LINE_STAR_COUNT}
+New Task List Created!
+{"-"*_LINE_STAR_COUNT}
+'''
+    
+    TASK_LIST_DELETED = f'''
+{"-"*_LINE_STAR_COUNT}
+Task List Has Been Deleted!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    TASK_LIST_UPDATED = f'''
+{"-"*_LINE_STAR_COUNT}
+Task List Has Been Updated!
+{"-"*_LINE_STAR_COUNT}
+'''
+    
     NO_TASK_FOUND = f'''
 {"-"*_LINE_STAR_COUNT}
 No Task Found! Create A New One Using "create" or "create;<name-of-task>"
@@ -96,8 +162,20 @@ Task Has Been Deleted!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    TASK_UPDATED = f'''
+{"-"*_LINE_STAR_COUNT}
+Task Has Been Updated!
+{"-"*_LINE_STAR_COUNT}
+'''
+
     RETURNING_TO_MAIN_MENU = f'''
 {"-"*_LINE_STAR_COUNT}
 Returning To Main Menu!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    SAVED_SUCCESSFULLY = f'''
+{"-"*_LINE_STAR_COUNT}
+Data Saved Successfully!
 {"-"*_LINE_STAR_COUNT}
 '''
