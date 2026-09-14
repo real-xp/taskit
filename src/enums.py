@@ -1,9 +1,18 @@
+# Imports
 from enum import Enum
 
+# ---------------------------------------
+
+# CONSTANTS
 _LINE_STAR_COUNT = 100
 _LINE_STAR_COUNT_BIG = 150
 
+# ---------------------------------------
+
+# Enum for SQLite queries.
 class DBQueries(Enum):
+
+    # Creates a new table for Tasklists
     CREATE_TASKLISTS = '''
 CREATE TABLE IF NOT EXISTS tasklists (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,6 +21,7 @@ CREATE TABLE IF NOT EXISTS tasklists (
 )
 '''
 
+    # Creates a new table for tasks linked using primary keys with tasklists
     CREATE_TASK = '''
 CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,38 +35,55 @@ CREATE TABLE IF NOT EXISTS tasks (
 )
 '''
 
+    # Creates a new tasklist entry
     CREATE_TASKLIST_ENTRY = '''
 INSERT INTO tasklists (name, creationDate) VALUES (?, ?)
 '''
 
+    # Creates a new task entry
     CREATE_TASK_ENTRY = '''
 INSERT INTO tasks (tasklistID, name, checked, priority, creationDate, tags) VALUES (?, ?, ?, ?, ?, ?)
 '''
 
+    # Loads all tasklists
     LOAD_ALL_TASKLISTS = '''
 SELECT * FROM tasklists ORDER BY id
 '''
 
+    # Loads all tasks from a particular tasklistID
     LOAD_ALL_TASKS = '''
 SELECT * FROM tasks WHERE tasklistID = ? ORDER BY id
 '''
 
-    DELETE_ALL_TASKS = '''
-DROP TABLE IF EXISTS tasks
-'''
-
+    # Deletes all tasklists.
     DELETE_ALL_TASKLISTS = '''
 DROP TABLE IF EXISTS tasklists
 '''
 
+    # Deletes all tasks.
+    DELETE_ALL_TASKS = '''
+DROP TABLE IF EXISTS tasks
+'''
+
+# ---------------------------------------
+
+# Enum for Yes Or No arguments.
+# No idea why i made this?
 class YesNo(Enum):
     YES = ('yes', 'y', 'ye')
     NO = ('no', 'n')
 
+# ---------------------------------------
+
+# Enum for Menu management.
 class Menu(Enum):
     MAIN_MENU = 0
     IN_TASK_LIST = 1
 
+# ---------------------------------------
+
+# Enum for argument parse management.
+# Each entry here is a tuple so we can use membership operators to see if user wrote one of the options.
 class Args(Enum):
     HELP = ("help", "h")
     MAIN = ("main", "home")
@@ -72,6 +99,9 @@ class Args(Enum):
     LISTS = ("lists", "view-lists", "view")
     EXIT = ("exit", "quit", "q", "leave")
 
+# ---------------------------------------
+
+# Enum for task priority
 class TaskPriority(Enum):
     NONE = 0
     LOW = 1
@@ -79,7 +109,12 @@ class TaskPriority(Enum):
     HIGH = 3
     MAXIMUM = 4
 
+# ---------------------------------------
+
+# Enum to show all print statements that are static for most part
 class PrintStatements(Enum):
+
+    # Prints the main menu help text.
     MAIN_MENU_HELP = f'''
 {"-"*_LINE_STAR_COUNT}
 TASKIT
@@ -99,6 +134,7 @@ To quit, when prompted, type "exit" or "quit"
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the tasklist help text.
     IN_TASK_LIST_HELP = f'''
 {"-"*_LINE_STAR_COUNT}
 TASKIT
@@ -120,60 +156,119 @@ To quit, when prompted, type "exit" or "quit"
 {"-"*_LINE_STAR_COUNT}
 '''
     
+    # Prints the exit text.
     EXIT_STATEMENT = f'''
 {"-"*_LINE_STAR_COUNT}
 Thank You For Using TaskIt.
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the invalid input text.
+    INVALID_STATEMENT = f'''
+{"-"*_LINE_STAR_COUNT}
+Invalid statement. Please refer to help page for valid options.
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the error text.
+    MAJOR_ERROR_STATEMENT = f'''
+{"-"*_LINE_STAR_COUNT}
+Unknown error has occured. The program will now exit.
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the no tast list found text.
     NO_TASK_LIST_EXIST = f'''
 {"-"*_LINE_STAR_COUNT}
 No Task Lists Exist! Create A New One Using "create" or "create;<name-of-task-list>"
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the tast list does not exists text.
+    NO_TASK_LIST_EXIST_SIMPLE = f'''
+{"-"*_LINE_STAR_COUNT}
+Error - Task List Does Not Exist!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the tast list created text.
     NEW_TASK_LIST_CREATED = f'''
 {"-"*_LINE_STAR_COUNT}
 New Task List Created!
 {"-"*_LINE_STAR_COUNT}
 '''
     
+    # Prints the tast list already exists text.
+    TASK_LIST_ALREADY_EXISTS = f'''
+{"-"*_LINE_STAR_COUNT}
+Error - Task List Already Exists!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the tast list already exists other text.
+    TASK_LIST_ALREADY_EXISTS_OTHER = f'''
+{"-"*_LINE_STAR_COUNT}
+Error - Task List With That Name Already Exists!
+{"-"*_LINE_STAR_COUNT}
+'''
+    
+    # Prints the tast list deleted text.
     TASK_LIST_DELETED = f'''
 {"-"*_LINE_STAR_COUNT}
 Task List Has Been Deleted!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the tast list cannot have no name text.
+    TASK_LIST_NOT_EMPTY_NAME = f'''
+{"-"*_LINE_STAR_COUNT}
+Error - Task List Name Cannot Be Empty!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the tast list updated text.
     TASK_LIST_UPDATED = f'''
 {"-"*_LINE_STAR_COUNT}
 Task List Has Been Updated!
 {"-"*_LINE_STAR_COUNT}
 '''
     
+    # Prints the no tast found text.
     NO_TASK_FOUND = f'''
 {"-"*_LINE_STAR_COUNT}
 No Task Found! Create A New One Using "create" or "create;<name-of-task>"
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the tast created text.
+    TASK_CREATED = f'''
+{"-"*_LINE_STAR_COUNT}
+Task Has Been Created!
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints the tast deleted text.
     TASK_DELETED = f'''
 {"-"*_LINE_STAR_COUNT}
 Task Has Been Deleted!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the tast updated text.
     TASK_UPDATED = f'''
 {"-"*_LINE_STAR_COUNT}
 Task Has Been Updated!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the home menu return text.
     RETURNING_TO_MAIN_MENU = f'''
 {"-"*_LINE_STAR_COUNT}
 Returning To Main Menu!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+    # Prints the successful save text.
     SAVED_SUCCESSFULLY = f'''
 {"-"*_LINE_STAR_COUNT}
 Data Saved Successfully!
