@@ -5,9 +5,13 @@ A simple yet elegant app that allows one to do task management.
 ## Features
 - Task Lists with CRUD operations
 - Tasks inside Task Lists with CRUD operations
+    - Can input priority of task.
+    - Can input tags for a particular task.
+- Saves / Loads database in / from an SQLite `.db` file
 
 ## Technologies Used
 - Python
+- SQLite3
 
 ## Build And Run
 - Clone the repository.

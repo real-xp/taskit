@@ -47,9 +47,11 @@ class TaskList:
         tasks = self.GetTasks()
         if (tasks is not None):
             tasks[0].ShowTaskInfo_Header()
+
             for i in range(len(tasks)):
                 print(f"{i:3} {" ":10} ", end="")
                 tasks[i].ShowTaskInfo()
+
         print("-"*enums._LINE_STAR_COUNT_BIG)
 
     # ---------------------------------------
@@ -59,9 +61,11 @@ class TaskList:
     # Allows for flexibility of parameters.
     def CreateTask(self, name:str, checked:str, priority:str, tags:str, creationDate=""):
         checked = True if (checked in enums.YesNo.YES.value) else False
+
         priority = str(priority)
         if priority == "" or priority.isalpha() or priority.isalnum(): priority = 0
         priority = int(priority) if (0 <= priority <= 4) else enums.TaskPriority.NONE
+        
         tags = tags.split(",")
 
         task = Task.Task(
