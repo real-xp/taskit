@@ -6,6 +6,7 @@ from enum import Enum
 # CONSTANTS
 _LINE_STAR_COUNT = 100
 _LINE_STAR_COUNT_BIG = 150
+APPNAME = "TaskIt"
 
 # ---------------------------------------
 
@@ -117,10 +118,10 @@ class PrintStatements(Enum):
     # Prints the main menu help text.
     MAIN_MENU_HELP = f'''
 {"-"*_LINE_STAR_COUNT}
-TASKIT
+{APPNAME}
 {"-"*_LINE_STAR_COUNT}
 
-Welcome to TaskIt! This app allows you to manage tasks and task lists.
+Welcome to {APPNAME}! This app allows you to manage tasks and task lists.
 You are currently in the MAIN MENU.
 
 To see all the lists, when prompted, type - "lists"
@@ -137,7 +138,7 @@ To quit, when prompted, type "exit" or "quit"
     # Prints the tasklist help text.
     IN_TASK_LIST_HELP = f'''
 {"-"*_LINE_STAR_COUNT}
-TASKIT
+{APPNAME}
 {"-"*_LINE_STAR_COUNT}
 
 You are in a Task List.
@@ -159,7 +160,7 @@ To quit, when prompted, type "exit" or "quit"
     # Prints the exit text.
     EXIT_STATEMENT = f'''
 {"-"*_LINE_STAR_COUNT}
-Thank You For Using TaskIt.
+Thank You For Using {APPNAME}.
 {"-"*_LINE_STAR_COUNT}
 '''
 
@@ -274,3 +275,90 @@ Returning To Main Menu!
 Data Saved Successfully!
 {"-"*_LINE_STAR_COUNT}
 '''
+
+class PyQt6StyleSheet(Enum):
+    STYLESHEET = """
+    QPushButton#AddTaskListButton, QPushButton#AddTaskButton {
+        border-radius: 10px;
+        background-color: #AAFFAA;
+        padding: 24px;
+        font-size: 32px;
+        font-family: "Rubik";
+    }
+
+    QPushButton#DeleteTaskListButton {
+        border-radius: 10px;
+        background-color: #FFAAAA;
+        padding: 24px;
+        font-size: 32px;
+        font-family: "Rubik";
+    }
+
+    QLabel#sideBarHeaderTitle{
+        font-size: 15px;
+        font-family: "Rubik";
+        font-weight: 600;
+    }
+
+    QLabel#mainBarHeaderTitle{
+        font-size: 15px;
+        font-family: "Rubik";
+        font-weight: 600;
+    }
+
+    QWidget#TaskListEntry{
+        border-radius: 10px;
+        background-color: #FFF;
+        padding: 20px;
+        font-family: "Rubik";
+    }
+
+    QWidget#TaskEntry{
+        border-radius: 10px;
+        background-color: #FFF;
+        padding: 15px;
+        font-family: "Rubik";
+    }
+
+    QWidget#TaskListEntryButton{
+        border-radius: 10px;
+        background-color: #DDD;
+        padding: 10px 20px 10px 20px;
+        font-family: "Rubik";
+    }
+
+    QWidget#TaskDeleteButton{
+        border-radius: 10px;
+        background-color: #FFAAAA;
+        padding: 10px 20px 10px 20px;
+        font-family: "Rubik";
+    }
+
+    QPushButton#TaskListEntryButton:hover {
+        background-color: #F8F8F8;
+    }
+
+    QPushButton#TaskListEntryButton:pressed {
+        background-color: #F0F0F0;
+    }
+
+    QLabel#TitleCardObject {
+        font-size: 32px;
+        font-family: "Rubik";
+        font-weight: 600;
+    }
+
+    QLabel#FieldNameTitle {
+        font-size: 16px;
+        font-family: "Rubik";
+        font-weight: 400;
+    }
+
+    QPushButton#SaveButtonWidget {
+        border-radius: 10px;
+        background-color: #FFAAAA;
+        padding: 8px;
+        font-size: 18px;
+        font-family: "Rubik";
+    }
+    """

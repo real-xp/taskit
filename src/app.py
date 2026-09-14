@@ -175,7 +175,7 @@ class App:
         name = name.lstrip()
         if (name == ""):
             name = str(input("Enter The Name For Task List : "))
-            
+
         if (name not in self.TASKLIST):
             print(enums.PrintStatements.NO_TASK_LIST_EXIST_SIMPLE.value)
             return
@@ -183,6 +183,7 @@ class App:
         del self.TASKLIST[name] # actual deletion of a tasklist.
 
         print(enums.PrintStatements.TASK_LIST_DELETED.value)
+        self.ChangeMenu(menu=enums.Menu.MAIN_MENU.value)
 
     # ---------------------------------------
 
