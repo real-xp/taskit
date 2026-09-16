@@ -62,9 +62,11 @@ class TaskList:
     def CreateTask(self, name:str, checked:str, priority:str, tags:str, creationDate=""):
         checked = True if (checked in enums.YesNo.YES.value) else False
 
-        priority = str(priority)
-        if priority == "" or priority.isalpha() or priority.isalnum(): priority = 0
-        priority = int(priority) if (0 <= priority <= 4) else enums.TaskPriority.NONE
+        try:
+            priority = int(priority)
+            priority = int(priority) if (0 <= priority <= 4) else enums.TaskPriority.NONE
+        except ValueError:
+            priority = enums.TaskPriority.NONE
 
         tags = tags.split(",")
 
@@ -93,8 +95,13 @@ class TaskList:
     # ---------------------------------------
 
     # Updates a task from a list if it exists within the given index.
-    def UpdateTask(self, index:int, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=[], checked:bool=False):
+    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=[], checked:bool=False):
         if (index > -1 and index < len(self.tasks)):
+            try:
+                priority = int(priority)
+                priority = int(priority) if (0 <= priority <= 4) else -1
+            except ValueError:
+                priority = -1
             self.tasks[index].UpdateFields(name=name, priority=priority, tags=tags, checked=checked)
             print(enums.PrintStatements.TASK_UPDATED.value)
             return 0

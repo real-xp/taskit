@@ -124,10 +124,14 @@ class PrintStatements(Enum):
 Welcome to {APPNAME}! This app allows you to manage tasks and task lists.
 You are currently in the MAIN MENU.
 
-To see all the lists, when prompted, type - "lists"
-To access a list, when prompted, type - "view;<name>" or "open;<name>" without <>
+To see all the lists, when prompted, type - "view" or "lists"
 To create a list, when prompted, type - "create" or "create;<name>" without <>
+To access a list, when prompted, type - "open;<name>" without <>
+To update a list, when prompted, type - "update;<name>;<new name>" or "update" without <>
 To delete a list, when prompted, type - "delete" or "delete;<name>" without <>
+
+To save the database into a '.db' file, type "save" when prompted.
+To go back to the main menu, type "home" when prompted.
 
 To see this message again, or see help page on any menu, when prompted, type - "help"
 To quit, when prompted, type "exit" or "quit"
@@ -143,13 +147,17 @@ To quit, when prompted, type "exit" or "quit"
 
 You are in a Task List.
 
-To see all the tasks, when prompted, type - "view"
 To create a task, when prompted, type - "create" or "create;<name>" without <>
     When asked about checked, type 'y' for yes or 'n' for no
     When asked about priority, type 0 (None) or 1 (Low) or 2 (Medium) or 3 (High) or 4 (Maximum)
     When asked about tags, type the tags followed by a single `,` (no space after `,`)
-To update a task, when prompted, type - "update;<name>" without <>
-To delete a task, when prompted, type - "delete" or "delete;<name>" or or "delete;<index>" without <>
+To see all the tasks, when prompted, type - "view"
+To update a task, when prompted, type - "update;<index>" without <>
+To delete a task, when prompted, type - "delete" or "delete;<index>" or without <>
+To check or uncheck a task, when prompted, type - "check;<index>" or "uncheck;<index>" without <>
+
+To save the database into a '.db' file, type "save" when prompted.
+To go back to the main menu, type "home" when prompted.
 
 To see this message again, or see help page on any menu, when prompted, type - "help"
 To quit, when prompted, type "exit" or "quit"
@@ -276,6 +284,7 @@ Data Saved Successfully!
 {"-"*_LINE_STAR_COUNT}
 '''
 
+# Unused Leftover
 class PyQt6StyleSheet(Enum):
     STYLESHEET = """
     QPushButton#AddTaskListButton, QPushButton#AddTaskButton {

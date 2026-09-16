@@ -65,7 +65,7 @@ class Task:
     def UpdateFields(self, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=[], checked:bool=False):
         if (name != ""): self.SetName(name=name)
         if (priority != -1): self.SetPriority(priority=priority)
-        if (len(tags) == 0): self.SetTags(tags=tags)
+        if (len(tags) != 0): self.SetTags(tags=tags)
         if (checked) : self.CheckTask()
 
     # ---------------------------------------

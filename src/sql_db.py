@@ -3,7 +3,7 @@ import sqlite3
 import enums
 
 # CONSTANTS
-PATH = "test/tasks.db"
+PATH = "database/tasks.db"
 
 # Main database class.
 class Database:

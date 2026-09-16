@@ -138,14 +138,44 @@ class App:
     # ---------------------------------------
 
     # Deletes the task at that index.
-    def DeleteTaskInList(self, index:int):
-        self.TASKLIST.get(self.CURRENT_TASK_LIST).DeleteTask(index=index)
+    def DeleteTaskInList(self, index:str):
+        if index == "":
+            index = str(input("Enter the index for the task : "))
+        try:
+            index = int(index)
+            self.TASKLIST.get(self.CURRENT_TASK_LIST).DeleteTask(index=index)
+        except ValueError:
+            print(enums.PrintStatements.NO_TASK_FOUND.value)
+
+    # ---------------------------------------
+
+    # Updates the task of a particular index.
+    def UpdateTaskInList(self, index:str):
+        if index == "":
+            index = str(input("Enter the index for the task : "))
+        try:
+            index = int(index)
+            name = str(input("Enter The Name For Task : "))
+            checked = str(input("Checked ? : ")).lower().lstrip()
+            priority = str(input("Priority ? : ")).lower().lstrip()
+            tags = str(input("Tags ? : ")).lower().lstrip()
+
+            self.TASKLIST.get(self.CURRENT_TASK_LIST).UpdateTask(index=index, name=name, priority=priority, tags=tags, checked=checked)
+
+        except ValueError:
+            print(enums.PrintStatements.NO_TASK_FOUND.value)
 
     # ---------------------------------------
 
     # Function that can be used to check or uncheck a task in a tasklist.
-    def CheckUncheckTaskInList(self, index:int, checked:bool=False):
-        self.TASKLIST.get(self.CURRENT_TASK_LIST).CheckUncheckTask(index=index, checked=checked)
+    def CheckUncheckTaskInList(self, index:str, checked:bool=False):
+        if index == "":
+            index = str(input("Enter the index for the task : "))
+        try:
+            index = int(index)
+            self.TASKLIST.get(self.CURRENT_TASK_LIST).CheckUncheckTask(index=index, checked=checked)
+        except ValueError:
+            print(enums.PrintStatements.NO_TASK_FOUND.value)
 
     # ---------------------------------------
 
@@ -207,6 +237,10 @@ class App:
             return
 
         # This section basically removes the item from the dictionary, and then renames the task, and puts it back under a new key name
+        if (name == "" or newName == ""):
+            print(enums.PrintStatements.NO_TASK_LIST_EXIST_SIMPLE.value)
+            return
+        
         task = self.TASKLIST.pop(name)
         task.UpdateName(newName)
         self.TASKLIST[newName] = task
@@ -253,7 +287,6 @@ class App:
     # This function can shape time and reality itself.
     # It just sees if the user inputs are equal to what it asks for, and does appropriate actions based on that.
     # If not, it gives an error.
-    # TODO : FINISH ERRORS
     def ArgParse(self, userInput:str):
         if (userInput[0] == ""): return 0
         if (userInput[0] in enums.Args.HELP.value): self.PrintHelp(menu=self.CURRENT_MENU); return 0
@@ -266,16 +299,17 @@ class App:
             if (userInput[0] in enums.Args.LISTS.value): self.GetAllTaskLists(); return 0
             if (userInput[0] in enums.Args.CREATE.value): self.CreateTaskList("" if len(userInput) < 2 else userInput[1]); return 0
             if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskList("" if len(userInput) < 2 else userInput[1]); return 0
+            if (userInput[0] in enums.Args.UPDATE.value): self.UpdateTaskList(name="" if len(userInput) < 2 else userInput[1], newName="" if len(userInput) < 3 else userInput[2]); return 0
             if (userInput[0] in enums.Args.OPEN.value): self.ChangeMenu("" if len(userInput) < 2 else userInput[1]); return 0
             print(enums.PrintStatements.INVALID_STATEMENT.value)
             
         elif (self.CURRENT_MENU == enums.Menu.IN_TASK_LIST.value and self.CURRENT_TASK_LIST in self.TASKLIST):
             if (userInput[0] in enums.Args.VIEW.value): self.ViewTasksInList(); return 0
             if (userInput[0] in enums.Args.CREATE.value): self.CreateTaskInList(name="" if len(userInput) < 2 else userInput[1]); return 0
-            if (userInput[0] in enums.Args.UPDATE.value): pass; return 0
-            if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskInList(index=0 if len(userInput) < 2 else int(userInput[1])); return 0
-            if (userInput[0] in enums.Args.CHECK.value): self.CheckUncheckTaskInList(index=0 if len(userInput) < 2 else int(userInput[1]), checked=True); return 0
-            if (userInput[0] in enums.Args.UNCHECK.value): self.CheckUncheckTaskInList(index=0 if len(userInput) < 2 else int(userInput[1]), checked=False); return 0
+            if (userInput[0] in enums.Args.UPDATE.value): self.UpdateTaskInList(index="" if len(userInput) < 2 else userInput[1]); return 0; return 0
+            if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskInList(index="" if len(userInput) < 2 else userInput[1]); return 0
+            if (userInput[0] in enums.Args.CHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=True); return 0
+            if (userInput[0] in enums.Args.UNCHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=False); return 0
             print(enums.PrintStatements.INVALID_STATEMENT.value)
             
         else:
