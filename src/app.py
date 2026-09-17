@@ -22,7 +22,7 @@ class App:
     # Loads the data from the SQLite database db file if it exiss, and if not, it creates a db file.
     # It first iterates over the list of tasks, and per task list, it then iterates over the tasks and puts them in the tasks.
     # Based on Unique incremental keys for IDs
-    def _LoadData(self):
+    def _LoadData(self) -> None:
         with sql_db.Database() as db: # Safe Resource Loading
             dbData = db.LoadTaskLists()
             if len(dbData) != 0: 
@@ -47,7 +47,7 @@ class App:
     # This is done so to avoid checking and updating and deleting each and every entry separately using queries.
     # This saves time, but can be heavy on memory usage / cpu usage for a brief second with large datasets.
     # If all is successful, it prints a success message.
-    def SaveData(self):
+    def SaveData(self) -> None:
         with sql_db.Database() as db:
 
             db.DropAllTables(makeNewTable=True) # Deletes all tables currently to remake the database
@@ -73,7 +73,8 @@ class App:
     # This function is used for changing the menu the user is currently in.
     # It can change between either the Main Menu, or a proper task list as its menu.
     # If a menu is invalid, it switches back to Main Menu.
-    def ChangeMenu(self, menu):
+    def ChangeMenu(self, menu) -> None:
+        menu = menu.strip()
         if (menu == enums.Menu.MAIN_MENU.value):
             self.CURRENT_MENU = enums.Menu.MAIN_MENU.value
             self.CURRENT_TASK_LIST = None
@@ -99,7 +100,7 @@ class App:
     # If you are in the Main Menu, it shows that.
     # If you are in a tasklist, it shows that.
     # Otherwise, it is Unknown.
-    def ShowCurrentMenu_Text(self):
+    def ShowCurrentMenu_Text(self) -> str:
         if (self.CURRENT_MENU == enums.Menu.MAIN_MENU.value): return "Main Menu"
         if (self.CURRENT_MENU != enums.Menu.MAIN_MENU.value and self.CURRENT_TASK_LIST is not None): return self.CURRENT_TASK_LIST
         return "Unknown"
@@ -107,28 +108,28 @@ class App:
     # ---------------------------------------
 
     # This is the main menu showing function
-    def ShowCurrentMenu(self):
+    def ShowCurrentMenu(self) -> None:
         print(f"You Are Currently In -> {self.ShowCurrentMenu_Text()}")
 
     # ---------------------------------------
 
     # Retrieves all the tasks in a tasklist.
-    def ViewTasksInList(self):
+    def ViewTasksInList(self) -> None:
         self.TASKLIST.get(self.CURRENT_TASK_LIST).ShowTasks()
 
     # ---------------------------------------
 
     # This function creates a new task inside the defined tasklist.
     # It asks for priority, checked status, tags and then commits it.
-    def CreateTaskInList(self, name:str):
-        if (name == ""):
-            name = str(input("Enter The Name For Task : "))
+    def CreateTaskInList(self, name:str) -> None:
+        if (name.strip() == ""):
+            name = str(input("Enter The Name For Task : ")).strip()
         
-        checked = str(input("Checked ? : ")).lower().lstrip()
-        priority = str(input("Priority ? : ")).lower().lstrip()
-        tags = str(input("Tags ? : ")).lower().lstrip()
+        checked = str(input("Checked ? : ")).lower().strip()
+        priority = str(input("Priority ? : ")).lower().strip()
+        tags = str(input("Tags ? : ")).lower().strip()
 
-        self.TASKLIST.get(self.CURRENT_TASK_LIST).CreateTask(name=name, 
+        self.TASKLIST.get(self.CURRENT_TASK_LIST).CreateTask(name=name.strip(), 
                                                              checked=checked, 
                                                              priority=priority, 
                                                              tags=tags)
@@ -138,9 +139,9 @@ class App:
     # ---------------------------------------
 
     # Deletes the task at that index.
-    def DeleteTaskInList(self, index:str):
+    def DeleteTaskInList(self, index:str) -> None:
         if index == "":
-            index = str(input("Enter the index for the task : "))
+            index = str(input("Enter the index for the task : ")).strip()
         try:
             index = int(index)
             self.TASKLIST.get(self.CURRENT_TASK_LIST).DeleteTask(index=index)
@@ -150,15 +151,15 @@ class App:
     # ---------------------------------------
 
     # Updates the task of a particular index.
-    def UpdateTaskInList(self, index:str):
+    def UpdateTaskInList(self, index:str) -> None:
         if index == "":
-            index = str(input("Enter the index for the task : "))
+            index = str(input("Enter the index for the task : ")).strip()
         try:
             index = int(index)
-            name = str(input("Enter The Name For Task : "))
-            checked = str(input("Checked ? : ")).lower().lstrip()
-            priority = str(input("Priority ? : ")).lower().lstrip()
-            tags = str(input("Tags ? : ")).lower().lstrip()
+            name = str(input("Enter The Name For Task : ")).strip()
+            checked = str(input("Checked ? : ")).lower().strip()
+            priority = str(input("Priority ? : ")).lower().strip()
+            tags = str(input("Tags ? : ")).lower().strip()
 
             self.TASKLIST.get(self.CURRENT_TASK_LIST).UpdateTask(index=index, name=name, priority=priority, tags=tags, checked=checked)
 
@@ -168,7 +169,7 @@ class App:
     # ---------------------------------------
 
     # Function that can be used to check or uncheck a task in a tasklist.
-    def CheckUncheckTaskInList(self, index:str, checked:bool=False):
+    def CheckUncheckTaskInList(self, index:str, checked:bool=False) -> None:
         if index == "":
             index = str(input("Enter the index for the task : "))
         try:
@@ -181,10 +182,12 @@ class App:
 
     # Creates A Tasklist
     # If a name is not predefined, it asks for a name, else it continues.
-    def CreateTaskList(self, name:str = ""):
-        name = name.lstrip()
+    def CreateTaskList(self, name:str = "") -> None:
+        name = name.strip()
         if (name == ""):
-            name = str(input("Enter The Name For Task List : "))
+            name = str(input("Enter The Name For Task List : ")).strip()
+
+        print(len(name))
 
         if (name in self.TASKLIST):
             print(enums.PrintStatements.TASK_LIST_ALREADY_EXISTS.value)
@@ -201,10 +204,10 @@ class App:
     # Deletes A Tasklist
     # If a name is not predefined, it asks for a name, else it continues.
     # If a list does not exist, it throws an error.
-    def DeleteTaskList(self, name:str = ""):
-        name = name.lstrip()
+    def DeleteTaskList(self, name:str = "") -> None:
+        name = name.strip()
         if (name == ""):
-            name = str(input("Enter The Name For Task List : "))
+            name = str(input("Enter The Name For Task List : ")).strip()
 
         if (name not in self.TASKLIST):
             print(enums.PrintStatements.NO_TASK_LIST_EXIST_SIMPLE.value)
@@ -220,17 +223,17 @@ class App:
     # Updates A Tasklist
     # If a name is not predefined, it asks for a name, else it continues.
     # If a new name is not predefined, it asks for a new name, else it continues.
-    def UpdateTaskList(self, name:str = "", newName:str = ""):
-        name = name.lstrip()
+    def UpdateTaskList(self, name:str = "", newName:str = "") -> None:
+        name = name.strip()
         if (name == ""):
-            name = str(input("Enter The Name For Task List : "))
+            name = str(input("Enter The Name For Task List : ")).strip()
 
         if (name not in self.TASKLIST):
             print(enums.PrintStatements.NO_TASK_LIST_EXIST_SIMPLE.value)
             return
 
         if (newName == ""):
-            newName = str(input("Enter The New Name For Task List : "))
+            newName = str(input("Enter The New Name For Task List : ")).strip()
 
         if (newName in self.TASKLIST):
             print(enums.PrintStatements.TASK_LIST_ALREADY_EXISTS_OTHER.value)
@@ -252,7 +255,7 @@ class App:
     # Prints / Retrieves all tasks in a tasklist.
     # If a list has no tasks, it prints an error.
     # Else it will print it out in a tabular form.
-    def GetAllTaskLists(self):
+    def GetAllTaskLists(self) -> None:
         if (len(self.TASKLIST) < 1): print(enums.PrintStatements.NO_TASK_LIST_EXIST.value)
         else:
             tasks = list(self.TASKLIST.values())
@@ -266,15 +269,19 @@ class App:
                 
     # ---------------------------------------
 
-    # Simple function to print an exit statement.
-    def PrintExitStatement(self):
+    # Processes the exit statement and asks user if they want to save or not
+    def ProcessExitStatement(self) -> int:
+        askUser = str(input("Do you want to save before exiting? (Y/N) : ")).strip().lower()
+        if (askUser in enums.YesNo.YES.value): 
+            self.SaveData()
         print(enums.PrintStatements.EXIT_STATEMENT.value)
+        return 0
 
     # ---------------------------------------
 
     # Function that prints help messages based on menu.
     # Modular, more menus can be added later.
-    def PrintHelp(self, menu:str=enums.Menu.MAIN_MENU.value):
+    def PrintHelp(self, menu:str=enums.Menu.MAIN_MENU.value) -> None:
         match menu:
             case enums.Menu.IN_TASK_LIST.value:
                 print(enums.PrintStatements.IN_TASK_LIST_HELP.value)
@@ -287,21 +294,22 @@ class App:
     # This function can shape time and reality itself.
     # It just sees if the user inputs are equal to what it asks for, and does appropriate actions based on that.
     # If not, it gives an error.
-    def ArgParse(self, userInput:str):
+    def ArgParse(self, userInput:str) -> int:
         if (userInput[0] == ""): return 0
         if (userInput[0] in enums.Args.HELP.value): self.PrintHelp(menu=self.CURRENT_MENU); return 0
         if (userInput[0] in enums.Args.MAIN.value): self.ChangeMenu(menu=enums.Menu.MAIN_MENU.value); return 0
-        if (userInput[0] in enums.Args.EXIT.value): self.PrintExitStatement(); return 1
+        if (userInput[0] in enums.Args.EXIT.value): self.ProcessExitStatement(); return 1
         if (userInput[0] in enums.Args.SAVE.value): self.SaveData(); return 0
         if (userInput[0] in enums.Args.CLEAR.value): return 0
 
         if (self.CURRENT_MENU == enums.Menu.MAIN_MENU.value):
             if (userInput[0] in enums.Args.LISTS.value): self.GetAllTaskLists(); return 0
-            if (userInput[0] in enums.Args.CREATE.value): self.CreateTaskList("" if len(userInput) < 2 else userInput[1]); return 0
-            if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskList("" if len(userInput) < 2 else userInput[1]); return 0
+            if (userInput[0] in enums.Args.CREATE.value): self.CreateTaskList(name="" if len(userInput) < 2 else userInput[1]); return 0
+            if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskList(name="" if len(userInput) < 2 else userInput[1]); return 0
             if (userInput[0] in enums.Args.UPDATE.value): self.UpdateTaskList(name="" if len(userInput) < 2 else userInput[1], newName="" if len(userInput) < 3 else userInput[2]); return 0
             if (userInput[0] in enums.Args.OPEN.value): self.ChangeMenu("" if len(userInput) < 2 else userInput[1]); return 0
             print(enums.PrintStatements.INVALID_STATEMENT.value)
+            return 0
             
         elif (self.CURRENT_MENU == enums.Menu.IN_TASK_LIST.value and self.CURRENT_TASK_LIST in self.TASKLIST):
             if (userInput[0] in enums.Args.VIEW.value): self.ViewTasksInList(); return 0
@@ -311,6 +319,7 @@ class App:
             if (userInput[0] in enums.Args.CHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=True); return 0
             if (userInput[0] in enums.Args.UNCHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=False); return 0
             print(enums.PrintStatements.INVALID_STATEMENT.value)
+            return 0
             
         else:
             print(enums.PrintStatements.MAJOR_ERROR_STATEMENT.value)

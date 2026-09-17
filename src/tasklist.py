@@ -16,7 +16,7 @@ class TaskList:
     # ---------------------------------------
 
     # Prints the header for the task list information, object independent.
-    def ShowTaskListInfo_Header(cls):
+    def ShowTaskListInfo_Header(cls) -> None:
         print("-"*enums._LINE_STAR_COUNT_BIG)
         print(f"{"UID":3} {" ":10} {"Task List Name":40} {"Total Tasks":15} {"Creation Date":30}")
         print("-"*enums._LINE_STAR_COUNT_BIG)
@@ -24,26 +24,26 @@ class TaskList:
     # ---------------------------------------
 
     # Prints the task list information.
-    def ShowTaskListInfo(self):
+    def ShowTaskListInfo(self) -> None:
         print(f"{self.name:40} {len(self.tasks):<15} {str(self.creationDate):30}")
 
     # ---------------------------------------
 
     # Generic functions to return attribute names.
-    def GetName(self): return self.name
-    def GetCreationDate(self): return str(self.creationDate)
-    def GetTasks(self): return self.tasks if len(self.tasks) > 0 else None
+    def GetName(self) -> str: return self.name
+    def GetCreationDate(self) -> str: return str(self.creationDate)
+    def GetTasks(self) -> list|None: return self.tasks if len(self.tasks) > 0 else None
 
     # ---------------------------------------
 
     # Generic functions to update name.
-    def UpdateName(self, name:str):
+    def UpdateName(self, name:str) -> None:
         if (name != ""): self.name = name
 
     # ---------------------------------------
 
     # Function that prints all tasks in the current tasklist object.
-    def ShowTasks(self):
+    def ShowTasks(self) -> None:
         tasks = self.GetTasks()
         if (tasks is not None):
             tasks[0].ShowTaskInfo_Header()
@@ -59,7 +59,7 @@ class TaskList:
     # Function to create a new task.
     # Has incorrect type checking.
     # Allows for flexibility of parameters.
-    def CreateTask(self, name:str, checked:str, priority:str, tags:str, creationDate=""):
+    def CreateTask(self, name:str, checked:str, priority:str, tags:str, creationDate="") -> None:
         checked = True if (checked in enums.YesNo.YES.value) else False
 
         try:
@@ -83,7 +83,7 @@ class TaskList:
     # ---------------------------------------
 
     # Deletes a task from a list if it exists within the given index.
-    def DeleteTask(self, index:int):
+    def DeleteTask(self, index:int) -> int:
         if (index > -1 and index < len(self.tasks)):
             del self.tasks[index]
             print(enums.PrintStatements.TASK_DELETED.value)
@@ -95,7 +95,7 @@ class TaskList:
     # ---------------------------------------
 
     # Updates a task from a list if it exists within the given index.
-    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=[], checked:bool=False):
+    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=[], checked:bool=False) -> int:
         if (index > -1 and index < len(self.tasks)):
             try:
                 priority = int(priority)
@@ -112,7 +112,7 @@ class TaskList:
     # ---------------------------------------
 
     # Checks Or Unchecks a task from a list if it exists within the given index.
-    def CheckUncheckTask(self, index:int, checked:bool=False):
+    def CheckUncheckTask(self, index:int, checked:bool=False) -> int:
         if (index > -1 and index < len(self.tasks)):
             self.tasks[index].CheckTask() if checked else self.tasks[index].UnCheckTask()
             print(enums.PrintStatements.TASK_UPDATED.value)
