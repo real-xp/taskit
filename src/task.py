@@ -7,13 +7,13 @@ class Task:
 
     # Initializer for the class.
     # Creates a task.
-    def __init__(self, name:str, checked:bool, creationTime=datetime.datetime.now(), priority:int=enums.TaskPriority.NONE, tags:list=[]):
+    def __init__(self, name:str, checked:bool, creationTime=None, priority:int=enums.TaskPriority.NONE, tags:list=None):
         self.name = name
         self.checked = checked
-        self.creationTime = creationTime
+        self.creationTime = creationTime if creationTime is not None else datetime.datetime.now()
         self.checkedDate = ""
         self.priority = priority
-        self.tags = tags
+        self.tags = tags if tags is not None else []
 
     # ---------------------------------------
 
@@ -45,7 +45,9 @@ class Task:
     def SetName(self, name:str) -> None: self.name = name
     def SetCreationDate(self, date) -> None: self.creationTime = date
     def SetPriority(self, priority:int=enums.TaskPriority.NONE) -> None: self.priority = priority
-    def SetTags(self, tags:list=[]) -> None: self.tags.extend(tags)
+    def SetTags(self, tags:list=None) -> None: 
+        if tags is None: tags = []
+        self.tags.extend(tags)
 
     # ---------------------------------------
 
@@ -62,7 +64,8 @@ class Task:
 
     # Function meant to update a task.
     # Allows for flexibility of fields.
-    def UpdateFields(self, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=[], checked:bool=False) -> None:
+    def UpdateFields(self, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=None, checked:bool=False) -> None:
+        if tags is None: tags = []
         if (name != ""): self.SetName(name=name)
         if (priority != -1): self.SetPriority(priority=priority)
         if (len(tags) != 0): self.SetTags(tags=tags)

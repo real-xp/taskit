@@ -8,10 +8,10 @@ class TaskList:
 
     # Initializer for the class.
     # Creates a task list.
-    def __init__(self, name:str, tasks:list=[], creationDate=datetime.datetime.now()):
+    def __init__(self, name:str, tasks:list=None, creationDate=None):
         self.name = name
-        self.creationDate = creationDate
-        self.tasks = tasks
+        self.creationDate = creationDate if creationDate is not None else datetime.datetime.now()
+        self.tasks = tasks if tasks is not None else []
 
     # ---------------------------------------
 
@@ -25,14 +25,14 @@ class TaskList:
 
     # Prints the task list information.
     def ShowTaskListInfo(self) -> None:
-        print(f"{self.name:40} {len(self.tasks):<15} {str(self.creationDate):30}")
+        print(f"{self.name:40} {len(self.GetTasks()):<15} {str(self.creationDate):30}")
 
     # ---------------------------------------
 
     # Generic functions to return attribute names.
     def GetName(self) -> str: return self.name
     def GetCreationDate(self) -> str: return str(self.creationDate)
-    def GetTasks(self) -> list|None: return self.tasks if len(self.tasks) > 0 else None
+    def GetTasks(self) -> list|None: return self.tasks if len(self.tasks) > 0 else []
 
     # ---------------------------------------
 
@@ -45,7 +45,7 @@ class TaskList:
     # Function that prints all tasks in the current tasklist object.
     def ShowTasks(self) -> None:
         tasks = self.GetTasks()
-        if (tasks is not None):
+        if (tasks != []):
             tasks[0].ShowTaskInfo_Header()
 
             for i in range(len(tasks)):
@@ -64,9 +64,9 @@ class TaskList:
 
         try:
             priority = int(priority)
-            priority = int(priority) if (0 <= priority <= 4) else enums.TaskPriority.NONE
+            priority = int(priority) if (0 <= priority <= 4) else enums.TaskPriority.NONE.value
         except ValueError:
-            priority = enums.TaskPriority.NONE
+            priority = enums.TaskPriority.NONE.value
 
         tags = tags.split(",")
 
@@ -95,13 +95,14 @@ class TaskList:
     # ---------------------------------------
 
     # Updates a task from a list if it exists within the given index.
-    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=[], checked:bool=False) -> int:
+    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=None, checked:bool=False) -> int:
         if (index > -1 and index < len(self.tasks)):
             try:
                 priority = int(priority)
                 priority = int(priority) if (0 <= priority <= 4) else -1
             except ValueError:
                 priority = -1
+            tags = tags if tags is not None else []
             self.tasks[index].UpdateFields(name=name, priority=priority, tags=tags, checked=checked)
             print(enums.PrintStatements.TASK_UPDATED.value)
             return 0

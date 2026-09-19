@@ -14,7 +14,7 @@ def main() -> int:
     
     while (True):
         app.ShowCurrentMenu() # Prints the menu you are currently in
-        userInput = [*map(str, str(input("What Operation Do You Want To Perform? : ")).lower().lstrip().split(";"))] # For User Input Mapping
+        userInput = [*map(str, str(input("What Operation Do You Want To Perform? : ")).lower().strip().split(";"))] # For User Input Mapping
         argResult = app.ArgParse(userInput=userInput) # Parses information from the user
         if (argResult in (1, -1)):
             break

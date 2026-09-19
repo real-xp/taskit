@@ -57,7 +57,7 @@ class App:
                                                creationDate=tasklist.GetCreationDate())
                 tasks = tasklist.GetTasks() # Gets all the tasks in a particular tasklist
 
-                if (tasks is not None):
+                if (tasks != []):
                     for task in tasks:
                         db.CreateTask(tasklistID=tasklistID,
                                         name=task.GetName(),
@@ -74,7 +74,9 @@ class App:
     # It can change between either the Main Menu, or a proper task list as its menu.
     # If a menu is invalid, it switches back to Main Menu.
     def ChangeMenu(self, menu) -> None:
-        menu = menu.strip()
+        if menu is str:
+            menu = menu.strip()
+
         if (menu == enums.Menu.MAIN_MENU.value):
             self.CURRENT_MENU = enums.Menu.MAIN_MENU.value
             self.CURRENT_TASK_LIST = None
@@ -186,8 +188,6 @@ class App:
         name = name.strip()
         if (name == ""):
             name = str(input("Enter The Name For Task List : ")).strip()
-
-        print(len(name))
 
         if (name in self.TASKLIST):
             print(enums.PrintStatements.TASK_LIST_ALREADY_EXISTS.value)
