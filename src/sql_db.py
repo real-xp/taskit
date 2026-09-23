@@ -1,6 +1,7 @@
 # Imports
 import sqlite3
 import enums
+import os
 
 # CONSTANTS
 PATH = "database/tasks.db"
@@ -12,6 +13,7 @@ class Database:
     # Makes sure every row is a sqlite row object.
     # also make sures foreign keys are on for relational tables.
     def __init__(self):
+        os.makedirs("database", exist_ok=True)
         self.connection = sqlite3.connect(PATH)
         self.connection.execute("PRAGMA foreign_keys = ON")
         self.connection.row_factory = sqlite3.Row
