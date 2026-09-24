@@ -48,9 +48,13 @@ class App:
     # This saves time, but can be heavy on memory usage / cpu usage for a brief second with large datasets.
     # If all is successful, it prints a success message.
     def SaveData(self) -> None:
+        rqCode = 0
         with sql_db.Database() as db:
 
-            db.DropAllTables(makeNewTable=True) # Deletes all tables currently to remake the database
+            rqCode = db.DropAllTables(makeNewTable=True) # Deletes all tables currently to remake the database
+
+            if rqCode != 0:
+                return
 
             for tasklist in self.TASKLIST.values():
                 tasklistID = db.CreateTaskList(name=tasklist.GetName(), 
@@ -65,8 +69,9 @@ class App:
                                         creationDate=str(task.GetCreationDate()), 
                                         priority=int(task.GetPriority()), 
                                         tags=Task.Task.ConvertTagsToString(tags=task.GetTags()))
-                        
-        print(enums.PrintStatements.SAVED_SUCCESSFULLY.value)
+
+        if rqCode == 0:
+            print(enums.PrintStatements.SAVED_SUCCESSFULLY.value)
 
     # ---------------------------------------
 
@@ -163,7 +168,18 @@ class App:
             priority = str(input("Priority ? : ")).lower().strip()
             tags = str(input("Tags ? : ")).lower().strip()
 
-            self.TASKLIST.get(self.CURRENT_TASK_LIST).UpdateTask(index=index, name=name, priority=priority, tags=tags, checked=checked)
+            if checked in enums.YesNo.YES.value:
+                checked = True
+            elif checked in enums.YesNo.NO.value:
+                checked = False
+            else:
+                checked = None
+            
+            self.TASKLIST.get(self.CURRENT_TASK_LIST).UpdateTask(index=index, 
+                                                                 name=name, 
+                                                                 priority=priority, 
+                                                                 tags=tags, 
+                                                                 checked=checked)
 
         except ValueError:
             print(enums.PrintStatements.NO_TASK_FOUND.value)

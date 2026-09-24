@@ -11,7 +11,7 @@ class Task:
         self.name = name
         self.checked = checked
         self.creationTime = creationTime if creationTime is not None else datetime.datetime.now()
-        self.checkedDate = ""
+        self.checkedDate = "" # has beein intentionally not used, was unsure how to make this implement properly
         self.priority = priority
         self.tags = tags if tags is not None else []
 
@@ -48,6 +48,9 @@ class Task:
     def SetTags(self, tags:list=None) -> None: 
         if tags is None: tags = []
         self.tags.extend(tags)
+    def ExactSetTags(self, tags:list=None) -> None:
+        if tags is None: tags = []
+        self.tags = tags
 
     # ---------------------------------------
 
@@ -64,12 +67,14 @@ class Task:
 
     # Function meant to update a task.
     # Allows for flexibility of fields.
-    def UpdateFields(self, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=None, checked:bool=False) -> None:
+    def UpdateFields(self, name:str="", priority:int=enums.TaskPriority.NONE, tags:list=None, checked:bool=None) -> None:
         if tags is None: tags = []
         if (name != ""): self.SetName(name=name)
         if (priority != -1): self.SetPriority(priority=priority)
-        if (len(tags) != 0): self.SetTags(tags=tags)
-        if (checked) : self.CheckTask()
+        if (len(tags) != 0): self.ExactSetTags(tags=tags)
+        if (checked != None and checked) : self.CheckTask()
+        if (checked != None and not checked) : self.UnCheckTask()
+
 
     # ---------------------------------------
 

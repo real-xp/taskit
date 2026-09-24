@@ -88,15 +88,15 @@ class Menu(Enum):
 class Args(Enum):
     HELP = ("help", "h")
     MAIN = ("main", "home")
-    CREATE = ("create")
-    DELETE = ("delete")
+    CREATE = ("create", "cr")
+    DELETE = ("delete", "del")
     CLEAR = ("clear", "clean", "", " ")
     CHECK = ("check", "tick")
     UNCHECK = ("uncheck", "untick", "cross")
-    UPDATE = ("update")
-    OPEN = ("open")
-    VIEW = ("view")
-    SAVE = ("save")
+    UPDATE = ("update", "updat")
+    OPEN = ("open", "o")
+    VIEW = ("view", "vi")
+    SAVE = ("save", "store")
     LISTS = ("lists", "view-lists", "view")
     EXIT = ("exit", "quit", "q", "leave")
 
@@ -190,6 +190,13 @@ Unknown error has occured. The program will now exit.
     NO_TASK_LIST_EXIST = f'''
 {"-"*_LINE_STAR_COUNT}
 No Task Lists Exist! Create A New One Using "create" or "create;<name-of-task-list>"
+{"-"*_LINE_STAR_COUNT}
+'''
+
+    # Prints Task List Small Warning
+    TASK_UPDATE_CHECKED_WARNING = f'''
+{"-"*_LINE_STAR_COUNT}
+Invalid option for checked was selected. Defaulting to Unchecked state.
 {"-"*_LINE_STAR_COUNT}
 '''
 

@@ -1,10 +1,11 @@
 # Imports
 import sqlite3
 import enums
-import os
+import os, shutil
 
 # CONSTANTS
-PATH = "database/tasks.db"
+PATH_ROOT = "database"
+PATH = f"{PATH_ROOT}/tasks.db"
 
 # Main database class.
 class Database:
@@ -13,7 +14,7 @@ class Database:
     # Makes sure every row is a sqlite row object.
     # also make sures foreign keys are on for relational tables.
     def __init__(self):
-        os.makedirs("database", exist_ok=True)
+        os.makedirs(PATH_ROOT, exist_ok=True)
         self.connection = sqlite3.connect(PATH)
         self.connection.execute("PRAGMA foreign_keys = ON")
         self.connection.row_factory = sqlite3.Row
@@ -66,12 +67,30 @@ class Database:
 
     # Deletes all the tables.
     # Also has an option of if we want to make a new table.
-    def DropAllTables(self, makeNewTable:bool=False) -> None:
-        cursor = self.connection.cursor()
-        cursor.execute(enums.DBQueries.DELETE_ALL_TASKS.value)
-        cursor.execute(enums.DBQueries.DELETE_ALL_TASKLISTS.value)
-        self.connection.commit()
+    def DropAllTables(self, makeNewTable:bool=False) -> int:
+        try:
+            shutil.copy2(PATH, f"{PATH}.bak")
+        except:
+            print("Error Occured Making Backup Of Database!")
+            return -1
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(enums.DBQueries.DELETE_ALL_TASKS.value)
+            cursor.execute(enums.DBQueries.DELETE_ALL_TASKLISTS.value)
+            self.connection.commit()
+        except:
+            print("Error Saving Data!")
+            return -1
+
+        try:
+            os.remove(f"{PATH}.bak")
+        except:
+            print("Cannot Delete Backup Database!")
+            return -1
+        
         if (makeNewTable): self._CreateTable()
+        return 0
 
     # ---------------------------------------
 

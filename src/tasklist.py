@@ -95,7 +95,7 @@ class TaskList:
     # ---------------------------------------
 
     # Updates a task from a list if it exists within the given index.
-    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=None, checked:bool=False) -> int:
+    def UpdateTask(self, index:int, name:str="", priority:str="", tags:list=None, checked:bool=None) -> int:
         if (index > -1 and index < len(self.tasks)):
             try:
                 priority = int(priority)
@@ -103,6 +103,7 @@ class TaskList:
             except ValueError:
                 priority = -1
             tags = tags if tags is not None else []
+            
             self.tasks[index].UpdateFields(name=name, priority=priority, tags=tags, checked=checked)
             print(enums.PrintStatements.TASK_UPDATED.value)
             return 0
