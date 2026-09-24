@@ -57,7 +57,6 @@ class TaskList:
     # ---------------------------------------
 
     # Function to create a new task.
-    # Has incorrect type checking.
     # Allows for flexibility of parameters.
     def CreateTask(self, name:str, checked:str, priority:str, tags:str, creationDate="") -> None:
         checked = True if (checked in enums.YesNo.YES.value) else False
@@ -68,7 +67,7 @@ class TaskList:
         except ValueError:
             priority = enums.TaskPriority.NONE.value
 
-        tags = tags.split(",")
+        tags = [tag.strip() for tag in tags.split(",") if tag.strip()]
 
         task = Task.Task(
             name=name,

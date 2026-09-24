@@ -41,7 +41,7 @@ The graphs and schemas for all are included in the project report.
 - Usability
     - It has been designed to be as simple and easy to use for a user as possible, with properly documented error messages.
 - Reliability
-    - The app preserves data via a `SQLite` database, meaning the data is never lost and is reliable in loading and saving.
+    - The app preserves data via a `SQLite` database, providing persistent local storage and allowing saved task data to be restored when the app is restarted.
 - Maintainability
     - Due to it's simple Object Oriented style, the program has excellent maintainability.
 - Resource Efficiency
