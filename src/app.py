@@ -330,7 +330,7 @@ class App:
         elif (self.CURRENT_MENU == enums.Menu.IN_TASK_LIST.value and self.CURRENT_TASK_LIST in self.TASKLIST):
             if (userInput[0] in enums.Args.VIEW.value): self.ViewTasksInList(); return 0
             if (userInput[0] in enums.Args.CREATE.value): self.CreateTaskInList(name="" if len(userInput) < 2 else userInput[1]); return 0
-            if (userInput[0] in enums.Args.UPDATE.value): self.UpdateTaskInList(index="" if len(userInput) < 2 else userInput[1]); return 0; return 0
+            if (userInput[0] in enums.Args.UPDATE.value): self.UpdateTaskInList(index="" if len(userInput) < 2 else userInput[1]); return 0
             if (userInput[0] in enums.Args.DELETE.value): self.DeleteTaskInList(index="" if len(userInput) < 2 else userInput[1]); return 0
             if (userInput[0] in enums.Args.CHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=True); return 0
             if (userInput[0] in enums.Args.UNCHECK.value): self.CheckUncheckTaskInList(index="" if len(userInput) < 2 else userInput[1], checked=False); return 0
