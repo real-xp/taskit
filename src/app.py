@@ -35,7 +35,7 @@ class App:
                     if len(taskData) != 0:
                         for task in taskData:
                             self.TASKLIST[data['name']].CreateTask(name=task['name'],
-                                                                    checked=bool(task['checked']),
+                                                                    checked=('yes' if task['checked'] else 'no'),
                                                                     priority=task['priority'],
                                                                     tags=task['tags'],
                                                                     creationDate=task['creationDate'])
@@ -56,10 +56,10 @@ class App:
             if rqCode != 0:
                 return
 
-            for tasklist in self.TASKLIST.values():
-                tasklistID = db.CreateTaskList(name=tasklist.GetName(), 
-                                               creationDate=tasklist.GetCreationDate())
-                tasks = tasklist.GetTasks() # Gets all the tasks in a particular tasklist
+            for _tasklist in self.TASKLIST.values():
+                tasklistID = db.CreateTaskList(name=_tasklist.GetName(), 
+                                               creationDate=_tasklist.GetCreationDate())
+                tasks = _tasklist.GetTasks() # Gets all the tasks in a particular tasklist
 
                 if (tasks != []):
                     for task in tasks:
@@ -86,7 +86,7 @@ class App:
             self.CURRENT_MENU = enums.Menu.MAIN_MENU.value
             self.CURRENT_TASK_LIST = None
 
-            print(f"{"-"*enums._LINE_STAR_COUNT}\nSwitching To Main Menu\n{"-"*enums._LINE_STAR_COUNT}")
+            print(f'{"-"*enums._LINE_STAR_COUNT}\nSwitching To Main Menu\n{"-"*enums._LINE_STAR_COUNT}')
 
         elif (menu not in self.TASKLIST):
             self.CURRENT_MENU = enums.Menu.MAIN_MENU.value
@@ -207,6 +207,10 @@ class App:
 
         if (name in self.TASKLIST):
             print(enums.PrintStatements.TASK_LIST_ALREADY_EXISTS.value)
+            return
+
+        if (name == ""):
+            print(enums.PrintStatements.TASK_LIST_NOT_EMPTY_NAME.value)
             return
 
         # Updates the task list name.

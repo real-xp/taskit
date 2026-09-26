@@ -20,14 +20,14 @@ class Task:
     # Prints the header for the task information, object independent.
     def ShowTaskInfo_Header(cls) -> None:
         print("-"*enums._LINE_STAR_COUNT_BIG)
-        print(f"{"UID":3} {" ":10} {"Task Name":30} {"Checked":20} {"Creation Date":30} {"Priority":20} Tags")
+        print(f'{"UID":3} {" ":10} {"Task Name":30} {"Checked":20} {"Creation Date":30} {"Priority":20} Tags')
         print("-"*enums._LINE_STAR_COUNT_BIG)
 
     # ---------------------------------------
 
     # Prints the task information.
     def ShowTaskInfo(self) -> None:
-        print(f"{self.name:30} {"Yes" if self.checked else "No":20} {str(self.creationTime):30} {enums.TaskPriority(self.priority).name:20} {self.tags}")
+        print(f'{self.name:30} {"Yes" if self.checked else "No":20} {str(self.creationTime):30} {enums.TaskPriority(self.priority).name:20} {self.tags}')
 
     # ---------------------------------------
 
