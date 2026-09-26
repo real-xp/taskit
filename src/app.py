@@ -99,7 +99,7 @@ class App:
             self.CURRENT_TASK_LIST = menu
             self.CURRENT_MENU = enums.Menu.IN_TASK_LIST.value
 
-            print(f"{"-"*enums._LINE_STAR_COUNT}\nSwitching To {self.CURRENT_TASK_LIST}\n{"-"*enums._LINE_STAR_COUNT}")
+            print(f'{"-"*enums._LINE_STAR_COUNT}\nSwitching To {self.CURRENT_TASK_LIST}\n{"-"*enums._LINE_STAR_COUNT}')
 
     # ---------------------------------------
 
@@ -282,7 +282,7 @@ class App:
             tasks[0].ShowTaskListInfo_Header()
 
             for i in range(len(tasks)):
-                print(f"{i:3} {" ":10} ", end="")
+                print(f'{i:3} {" ":10} ', end="")
                 tasks[i].ShowTaskListInfo()
 
         print("-"*enums._LINE_STAR_COUNT_BIG)
