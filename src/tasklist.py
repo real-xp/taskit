@@ -18,14 +18,14 @@ class TaskList:
     # Prints the header for the task list information, object independent.
     def ShowTaskListInfo_Header(cls) -> None:
         print("-"*enums._LINE_STAR_COUNT_BIG)
-        print(f"{"UID":3} {" ":10} {"Task List Name":40} {"Total Tasks":15} {"Creation Date":30}")
+        print(f'{"UID":3} {" ":10} {"Task List Name":40} {"Total Tasks":15} {"Creation Date":30}')
         print("-"*enums._LINE_STAR_COUNT_BIG)
 
     # ---------------------------------------
 
     # Prints the task list information.
     def ShowTaskListInfo(self) -> None:
-        print(f"{self.name:40} {len(self.GetTasks()):<15} {str(self.creationDate):30}")
+        print(f'{self.name:40} {len(self.GetTasks()):<15} {str(self.creationDate):30}')
 
     # ---------------------------------------
 

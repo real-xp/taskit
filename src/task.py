@@ -20,7 +20,7 @@ class Task:
     # Prints the header for the task information, object independent.
     def ShowTaskInfo_Header(cls) -> None:
         print("-"*enums._LINE_STAR_COUNT_BIG)
-        print(f"{"UID":3} {" ":10} {"Task Name":30} {"Checked":20} {"Creation Date":30} {"Priority":20} Tags")
+        print(f'{"UID":3} {" ":10} {"Task Name":30} {"Checked":20} {"Creation Date":30} {"Priority":20} Tags')
         print("-"*enums._LINE_STAR_COUNT_BIG)
 
     # ---------------------------------------

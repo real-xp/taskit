@@ -47,13 +47,13 @@ The graphs and schemas for all are included in the project report.
 - Resource Efficiency
     - The program is very resource efficient sa it does not waste resources with useless UI or Server Connections.
 
-
 ## Tools Used
 - Visual Studio Code (to make the project in)
 - `sqliteviewer` (to view the database easily, [link](https://beta.sqliteviewer.app/))
 
 ## Build And Run
 - Clone the repository.
+- **Make sure you have *Python 3.12* or newer installed, else you might run into errors.**
 - Run `main.py` using command-line, while being in the parent directory and not the 'src' directory.
 
 ## Test
@@ -70,6 +70,11 @@ Test cases are as follows -
 - Restart The App
 - Verify Everything Persisted
 - Delete Task List
+
+**Make sure you have *Python 3.12* or newer installed, else you might run into errors.**
+
+This is because the code was tested with Python 3.12 and newer, and has not been guarenteed to work with older builds of Python.
+
 
 ## About
 This app was made by me (`real-xp` / won't use my real name here) for a University Course project for the `Python Essentials` course specifically.
